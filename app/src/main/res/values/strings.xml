@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">TimeTonicApp</string>
+    <string name="wellcome">Hi, Welcome</string>
+    <string name="email">Email</string>
+    <string name="pass">Password</string>
+    <string name="login">Enter</string>
+
+<!--    LANDING ACTIVITY-->
+    <string name="landing">Book List</string>
+    <string name="back">Back</string>
+    <string name="search">Search Books</string>
+</resources>

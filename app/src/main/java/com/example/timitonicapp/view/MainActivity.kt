@@ -79,39 +79,6 @@ class MainActivity : AppCompatActivity() {
                     alert_1()
                 }
 
-//                if (email.isEmpty() || pass.isEmpty()) {
-//                    alert()
-//                } else if (sessionKey.toString() != keyApi && email != user || pass != pwd) {
-//                    alert_1()
-//                } else if (!isValidEmail(email) || !isValidPassword(pass)) {
-//                    alert_1()
-//                } else {
-//                    val intent = Intent(this@MainActivity, BooksActivity::class.java)
-//                    startActivity(intent)
-//                }
-
-//                when {
-//                    email.isEmpty() || pass.isEmpty() -> {
-//                        alert()
-//                    }
-//
-//                    !isValidEmail(email) || !isValidPassword(pass) -> {
-//                        alert_1()
-//                    }
-//
-//                    sessionKey.toString() != keyApi -> {
-//                        alert_1()
-//                    }
-//
-//                    email != user || pass != pwd -> {
-//                        alert_1()
-//                    }
-//
-//                    else -> {
-//                        val intent = Intent(this@MainActivity, BooksActivity::class.java)
-//                        startActivity(intent)
-//                    }
-//                }
             }
 
         }
@@ -124,7 +91,7 @@ class MainActivity : AppCompatActivity() {
         builder.setMessage("Try Again")
 
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
-            // Acciones a realizar cuando el usuario presiona el botón "OK"
+            // ACTION TO OK
         })
         builder.show()
     }
@@ -135,7 +102,7 @@ class MainActivity : AppCompatActivity() {
         builder.setMessage("Try Again")
 
         builder.setPositiveButton("OK", DialogInterface.OnClickListener { dialog, id ->
-            // Acciones a realizar cuando el usuario presiona el botón "OK"
+            // ACTION TO OK
         })
         builder.show()
     }

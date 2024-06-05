@@ -7,7 +7,7 @@ import com.example.timitonicapp.R
 import com.example.timitonicapp.view.response.BooksDataResponse
 import com.example.timitonicapp.view.response.OwnerPrefs
 
-//creo el adapter que llama a BooksViewHolder
+//build the adapter to calls BooksViewHolder
 class BooksAdapter(private var booksList: List<OwnerPrefs> = emptyList()) :
     RecyclerView.Adapter<BooksViewHolder>() {
 

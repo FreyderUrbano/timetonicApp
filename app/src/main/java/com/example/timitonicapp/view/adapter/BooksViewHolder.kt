@@ -21,9 +21,10 @@ class BooksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
             Log.i("Frey", "${newUrl.toString()}")
             Glide.with(itemView.context).load(newUrl).into(binding.ivBooks)
         } else {
-            Log.i("Frey", "ES NULA")
+            Log.i("Frey", "null")
         }
 
     }
 }
+//THE URL IS NULL IN THE API CALL
 //https://timetonic.com/live/dbi/in/tb/FU-1701419839-65699b3f78400/modele-suivi-projet.jpg

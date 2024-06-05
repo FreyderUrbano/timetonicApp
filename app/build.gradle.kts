@@ -42,6 +42,10 @@ android {
 
 dependencies {
 
+    //GLIDE
+    implementation ("com.github.bumptech.glide:glide:4.12.0")
+    annotationProcessor ("com.github.bumptech.glide:compiler:4.12.0")
+
     //viewmodel
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.8.0")
     //liveData

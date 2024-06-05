@@ -4,17 +4,16 @@ import android.content.DialogInterface
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
-import com.example.timitonicapp.R
+import androidx.core.view.isVisible
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.timitonicapp.databinding.ActivityBooksBinding
-import com.example.timitonicapp.view.response.BooksDataResponse
+import com.example.timitonicapp.view.adapter.BooksAdapter
 import com.example.timitonicapp.view.service.ApiService
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -22,6 +21,7 @@ class BooksActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityBooksBinding
     private lateinit var retrofit: Retrofit
+    private lateinit var adapter: BooksAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,20 +33,38 @@ class BooksActivity : AppCompatActivity() {
 
     }
 
-
-
     private fun beginUI() {
+
+        adapter = BooksAdapter()
+        binding.RVBooks.setHasFixedSize(true)
+        binding.RVBooks.layoutManager = LinearLayoutManager(this)
+        binding.RVBooks.adapter = adapter
+
         binding.btnBack.setOnClickListener {
             val back = Intent(this, MainActivity::class.java)
             startActivity(back)
         }
-
-
     }
 
     private fun getAllBooks(query: String) {
+        binding.progresBar.isVisible = true
         CoroutineScope(Dispatchers.IO).launch {
-            val service = retrofit.create(ApiService::class.java).getAllBooks()
+            val myResponse = retrofit.create(ApiService::class.java).getAllBooks(
+                "1.47",
+                "getAllBooks",
+                "androiddeveloper",
+                "androiddeveloper",
+                "7iim-Kmlj-YIsS-Pbfc-iKTd-CwNe-QnyK"
+            )
+            if (myResponse != null) {
+                Log.i("Frey", "FUNCIONA ${myResponse.toString()}")
+                runOnUiThread {
+                    adapter.updatList(myResponse.allBooks.books.map { it.ownerPrefs })
+                    binding.progresBar.isVisible = false
+                }
+            } else {
+                Log.i("Frey", "NO FUNCIONA")
+            }
         }
 
     }
@@ -58,6 +76,7 @@ class BooksActivity : AppCompatActivity() {
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }
+
     private fun alert() {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Error")

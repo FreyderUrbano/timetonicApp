@@ -22,31 +22,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        retrofit = getRetrofit()
         setContentView(binding.root)
+        retrofit = getRetrofit()
         validation()
-
-//        val email = binding.tietEmail
-//        val pass = binding.tietPass
-//        val btnLogin = binding.btnLogin
-
-//        val emailExample = "android.developer@timetonic.com"
-//        val passExample = "Android.developer1"
-//
-//        btnLogin.setOnClickListener {
-//            val emailText = email.text.toString()
-//            val passText = pass.text.toString()
-//
-//            if (emailText.isEmpty() && passText.isEmpty()) {
-//                alert()
-//            } else if (emailText == emailExample && passText == passExample) {
-//                val intent = Intent(this, BooksActivity::class.java)
-//                startActivity(intent)
-//            } else {
-//                alert_1()
-//            }
-//
-//        }
     }
 
     private fun validation() {
@@ -57,42 +35,83 @@ class MainActivity : AppCompatActivity() {
             val passVal = binding.tietPass
             val btnLogin = binding.btnLogin
 
-            val appkeyResponse = authenticationService.createApikey(emailVal, passVal)
-            val appkey = appkeyResponse.body()
+            val appkeyResponse =
+                authenticationService.createAppKey("1.47", "createAppkey", "android")
+            Log.i("Frey", "Appkey Response: $appkeyResponse")
+            val appkey = appkeyResponse
 
-            val pauthkeyResponse = authenticationService.createPauthkey(appkey)
-            val pauthkey = pauthkeyResponse.body()
+            val pauthkeyResponse = authenticationService.createOAuthKey(
+                "1.47",
+                "createOauthkey",
+                "androiddeveloper",
+                "Android.developer1",
+                "Y3kU-Ai5e-MMta-Uxba-GgF1-ftBJ-es1u"
+            )
+            Log.i("Frey", "pauthkeyResponse $pauthkeyResponse")
+            val pauthkey = pauthkeyResponse
 
-            val sesskeyResponse = authenticationService.createSesskey(pauthkey)
-            val sesskey = sesskeyResponse.body()
-            Log.i("Frey", "$sesskey")
+            val sesskeyResponse = authenticationService.createSesskey(
+                "1.47",
+                "createSesskey",
+                "androiddeveloper",
+                "androiddeveloper",
+                "Jym3-m5rm-UIQx-14AT-9J9D-g7Ht-qITl"
+            )
+            val sesskey = sesskeyResponse
+            val sesskeyString = sesskey.string()
+            if (sesskeyString != null) {
+                Log.i("Frey", "Es esta $sesskeyString")
+            }
+
 
             btnLogin.setOnClickListener {
                 val email = emailVal.text.toString()
                 val pass = passVal.text.toString()
-                val key = sesskey
-                val keyApi = "NN3s-tDmK-wNQm-S2J8-zytF-mYTN-2Wbt"
+                val sessionKey = sesskey
+                val keyApi = "7iim-Kmlj-YIsS-Pbfc-iKTd-CwNe-QnyK"
+                val user = "android.developer@timetonic.com"
+                val pwd = "Android.developer1"
 
-                if (email.isEmpty() && pass.isEmpty()) {
-                    alert()
+                if (email.isNotEmpty() || pass.isNotEmpty() && sessionKey.toString() == keyApi && email == user || pass == pwd) {
+                    val intent = Intent(this@MainActivity, BooksActivity::class.java)
+                    startActivity(intent)
                 } else {
-                    if (isValidEmail(email) && isValidPassword(pass)) {
-                        val intent = Intent(this@MainActivity, BooksActivity::class.java)
-                        startActivity(intent)
-                    } else if (email == "android.developer@timetonic.com" && pass == "Android.developer1") {
-                        val intent = Intent(this@MainActivity, BooksActivity::class.java)
-                        startActivity(intent)
-                    } else {
-                        if (key.toString() == keyApi) {
-                            val intent = Intent(this@MainActivity, BooksActivity::class.java)
-                            startActivity(intent)
-                        } else {
-                            alert_1()
-                        }
-
-                    }
+                    alert_1()
                 }
 
+//                if (email.isEmpty() || pass.isEmpty()) {
+//                    alert()
+//                } else if (sessionKey.toString() != keyApi && email != user || pass != pwd) {
+//                    alert_1()
+//                } else if (!isValidEmail(email) || !isValidPassword(pass)) {
+//                    alert_1()
+//                } else {
+//                    val intent = Intent(this@MainActivity, BooksActivity::class.java)
+//                    startActivity(intent)
+//                }
+
+//                when {
+//                    email.isEmpty() || pass.isEmpty() -> {
+//                        alert()
+//                    }
+//
+//                    !isValidEmail(email) || !isValidPassword(pass) -> {
+//                        alert_1()
+//                    }
+//
+//                    sessionKey.toString() != keyApi -> {
+//                        alert_1()
+//                    }
+//
+//                    email != user || pass != pwd -> {
+//                        alert_1()
+//                    }
+//
+//                    else -> {
+//                        val intent = Intent(this@MainActivity, BooksActivity::class.java)
+//                        startActivity(intent)
+//                    }
+//                }
             }
 
         }
@@ -121,24 +140,25 @@ class MainActivity : AppCompatActivity() {
         builder.show()
     }
 
-    private fun getRetrofit(): Retrofit {
-        return Retrofit
-            .Builder()
-            .baseUrl("https://timetonic.com/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-    }
-
-    fun isValidEmail(email: String): Boolean {
-        val emailRegex = "^A-Za-z([@]{1})(.{1,})(\\.)(.{1,})".toRegex()
-        return emailRegex.matches(email)
-    }
-
-    fun isValidPassword(password: String): Boolean {
-        val passwordRegex =
-            "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$".toRegex()
-        return passwordRegex.matches(password)
-    }
-
-
 }
+
+private fun getRetrofit(): Retrofit {
+    return Retrofit
+        .Builder()
+        .baseUrl("https://timetonic.com/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+}
+
+fun isValidEmail(email: String): Boolean {
+    val emailRegex = "^A-Za-z([@]{1})(.{1,})(\\.)(.{1,})".toRegex()
+    return emailRegex.matches(email)
+}
+
+fun isValidPassword(password: String): Boolean {
+    val passwordRegex =
+        "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{8,}$".toRegex()
+    return passwordRegex.matches(password)
+}
+
+

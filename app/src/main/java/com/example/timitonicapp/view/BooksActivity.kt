@@ -57,13 +57,13 @@ class BooksActivity : AppCompatActivity() {
                 "7iim-Kmlj-YIsS-Pbfc-iKTd-CwNe-QnyK"
             )
             if (myResponse != null) {
-                Log.i("Frey", "FUNCIONA ${myResponse.toString()}")
+                Log.i("Frey", "woks ${myResponse.toString()}")
                 runOnUiThread {
                     adapter.updatList(myResponse.allBooks.books.map { it.ownerPrefs })
                     binding.progresBar.isVisible = false
                 }
             } else {
-                Log.i("Frey", "NO FUNCIONA")
+                Log.i("Frey", "Dont Works")
             }
         }
 
